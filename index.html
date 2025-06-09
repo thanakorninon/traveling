@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Planner - วางแผนการเที่ยว</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <h1>Travel Planner</h1>
+                    </div>
+                    <nav class="nav">
+                        <button class="nav-btn active" data-tab="planner">
+                            <i class="fas fa-route"></i>
+                            วางแผนการเที่ยว
+                        </button>
+                        <button class="nav-btn" data-tab="search">
+                            <i class="fas fa-search"></i>
+                            ค้นหาสถานที่
+                        </button>
+                        <button class="nav-btn" data-tab="budget">
+                            <i class="fas fa-calculator"></i>
+                            คำนวณงบประมาณ
+                        </button>
+                        <button class="nav-btn" data-tab="packing">
+                            <i class="fas fa-suitcase-rolling"></i>
+                            จัดกระเป๋า
+                        </button>
+                    </nav>
+                    <div class="theme-switcher">
+                        <i class="fas fa-sun"></i>
+                        <label class="switch">
+                            <input type="checkbox" id="theme-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <i class="fas fa-moon"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <div id="planner-tab" class="tab-content active">
+                    <!-- Planner content -->
+                    <div class="planner-layout">
+                        <div class="planner-sidebar">
+                            <div class="trip-info">
+                                <h2>รายละเอียดทริป</h2>
+                                <div class="form-group">
+                                    <label>ชื่อทริป</label>
+                                    <input type="text" id="trip-name" placeholder="เช่น เที่ยวภาคเหนือ 5 วัน">
+                                </div>
+                                <div class="form-group">
+                                    <label>เวลาเริ่มต้น (สำหรับวันแรก)</label>
+                                    <input type="time" id="start-time" value="09:00">
+                                </div>
+                            </div>
+
+                            <div class="quick-add">
+                                <h3>เพิ่มสถานที่ด่วน</h3>
+                                <div class="quick-places">
+                                    <button class="quick-place-btn" data-place="วัดพระแก้ว"><i class="fas fa-place-of-worship"></i> วัดพระแก้ว</button>
+                                    <button class="quick-place-btn" data-place="พระบรมมหาราชวัง"><i class="fas fa-crown"></i> พระบรมมหาราชวัง</button>
+                                    <button class="quick-place-btn" data-place="วัดอรุณราชวราราม"><i class="fas fa-place-of-worship"></i> วัดอรุณ</button>
+                                    <button class="quick-place-btn" data-place="สยามสแควร์"><i class="fas fa-shopping-bag"></i> สยามสแควร์</button>
+                                    <button class="quick-place-btn" data-place="ตลาดจตุจักร"><i class="fas fa-store"></i> ตลาดจตุจักร</button>
+                                    <button class="quick-place-btn" data-place="ไอคอนสยาม"><i class="fas fa-building"></i> ไอคอนสยาม</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="planner-main">
+                            <div class="planner-header">
+                                <h2>แผนการเดินทาง</h2>
+                                <button class="btn btn-primary" id="add-place-btn"><i class="fas fa-plus"></i> เพิ่มสถานที่</button>
+                            </div>
+
+                            <div class="itinerary-container">
+                                <div id="itinerary-list" class="itinerary-list"></div>
+                                <div class="empty-state" id="empty-state">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                    <h3>เริ่มวางแผนการเที่ยวของคุณ</h3>
+                                    <p>เพิ่มสถานที่ที่ต้องการไปเพื่อสร้างแผนการเดินทาง</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-tab" class="tab-content">
+                    <!-- Search content -->
+                     <div class="search-container">
+                        <div class="search-header">
+                            <h2>ค้นหาสถานที่ท่องเที่ยว</h2>
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="search-input" placeholder="ค้นหาสถานที่ในกรุงเทพฯ...">
+                                <button class="btn search-btn" id="search-btn">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="search-results" class="search-results">
+                            <div class="spinner-container" style="display: none;"><div class="spinner"></div><p>กำลังค้นหา...</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="budget-tab" class="tab-content">
+                    <!-- NEW Daily Budget Layout with Chart -->
+                    <div class="budget-layout">
+                        <div class="budget-visual-container card">
+                            <h3><i class="fas fa-chart-pie"></i> ภาพรวมงบประมาณ</h3>
+                            <div class="chart-container">
+                                <canvas id="budgetChart"></canvas>
+                            </div>
+                            <div class="budget-sliders">
+                                <h4>ปรับแต่งงบประมาณ (ต่อวัน)</h4>
+                                <div class="slider-group">
+                                    <label for="food-slider">ค่าอาหาร: <span id="food-slider-value">800</span> บาท</label>
+                                    <input type="range" id="food-slider" min="0" max="3000" value="800" step="50">
+                                </div>
+                                <div class="slider-group">
+                                    <label for="transport-slider">ค่าเดินทาง (เฉลี่ยต่อสถานที่): <span id="transport-slider-value">165</span> บาท</label>
+                                    <input type="range" id="transport-slider" min="0" max="500" value="165" step="5">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="budget-breakdown-container card">
+                             <div class="budget-page-header">
+                                <h2><i class="fas fa-list-ul"></i> สรุปค่าใช้จ่าย</h2>
+                                <div class="grand-total-budget">
+                                    <span class="label">รวมทั้งหมด (ประมาณการ)</span>
+                                    <span class="amount" id="grand-total-budget">0 บาท</span>
+                                </div>
+                            </div>
+                            <div id="daily-budget-container" class="daily-budget-container">
+                                <!-- Daily budget cards will be inserted here by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="packing-tab" class="tab-content">
+                    <!-- Packing content -->
+                    <div class="packing-container card">
+                        <div class="packing-header">
+                            <h2><i class="fas fa-suitcase-rolling"></i> รายการจัดกระเป๋า</h2>
+                            <button class="btn btn-secondary" id="clear-checklist-btn"><i class="fas fa-trash-alt"></i> ล้างทั้งหมด</button>
+                        </div>
+                        <div class="template-section">
+                            <h3>ใช้เทมเพลต:</h3>
+                            <div class="template-buttons">
+                                <button class="template-btn" data-template="beach"><i class="fas fa-umbrella-beach"></i> ทริปทะเล</button>
+                                <button class="template-btn" data-template="winter"><i class="fas fa-snowflake"></i> ทริปหน้าหนาว</button>
+                                <button class="template-btn" data-template="general"><i class="fas fa-box"></i> ทั่วไป</button>
+                            </div>
+                        </div>
+                        <div class="add-item-form">
+                            <input type="text" id="checklist-item-input" placeholder="เพิ่มของที่ต้องจัด...">
+                            <button class="btn btn-primary" id="add-checklist-item-btn"><i class="fas fa-plus"></i> เพิ่ม</button>
+                        </div>
+                        <div class="checklist-progress">
+                            <div class="progress-bar-container"><div class="progress-bar" id="checklist-progress-bar"></div></div>
+                            <span id="checklist-progress-text">0/0</span>
+                        </div>
+                        <ul id="checklist" class="checklist"></ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div id="add-place-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>เพิ่มสถานที่ใหม่</h3>
+                <button class="close-btn" id="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>ชื่อสถานที่</label>
+                    <input type="text" id="place-name" placeholder="เช่น วัดพระแก้ว">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>จังหวัด</label>
+                        <select id="place-province">
+                            <option value="">เลือกจังหวัด</option>
+                             <optgroup label="ภาคกลาง">
+                                <option value="bangkok">กรุงเทพมหานคร</option>
+                                <option value="ayutthaya">พระนครศรีอยุธยา</option>
+                                <option value="kanchanaburi">กาญจนบุรี</option>
+                                <option value="nakhonpathom">นครปฐม</option>
+                                <option value="samutsongkhram">สมุทรสงคราม</option>
+                            </optgroup>
+                             <optgroup label="ภาคเหนือ">
+                                <option value="Chiang Mai">เชียงใหม่</option>
+                                <option value="Chiang Rai">เชียงราย</option>
+                                <option value="Lampang">ลำปาง</option>
+                                <option value="Lam phun">ลำพูน</option>
+                                <option value="Phayao">พะเยา</option>
+                            </optgroup>
+                             <optgroup label="ภาคอีสาน">
+                                <option value="Khon Kaen">ขอนแก่น</option>
+                                <option value="Chaiyaphum">ชัยภูมิ</option>
+                                <option value="Burirum">บุรีรัมย์</option>
+                                <option value="Loei">เลย</option>
+                                <option value="Surin">สุรินทร์</option>
+                            </optgroup>
+                             <optgroup label="ภาคใต้">
+                                <option value="Krabi">กระบี่</option>
+                                <option value="Trang">ตรัง</option>
+                                <option value="Chumphon">ชุมพร</option>
+                                <option value="Songkhla">สงขลา</option>
+                                <option value="Yala">ยะลา</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>วันที่ไป</label>
+                        <input type="date" id="place-date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>ประเภท</label>
+                     <select id="place-category">
+                        <option value="temple">วัด-พระราชวัง</option>
+                        <option value="Shopping mall">ห้างสรรพสินค้า</option>
+                        <option value="Cafe">คาเฟ่</option>
+                        <option value="Maket">ตลาด</option>
+                        <option value="restaurant">ร้านอาหาร</option>
+                        <option value="viewpoint">จุดชมวิว</option>
+                        <option value="museum">พิพิธภัณฑ์</option>
+                        <option value="Others">อื่นๆ</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>เวลาเข้า</label>
+                        <input type="time" id="place-start-time">
+                    </div>
+                    <div class="form-group">
+                        <label>เวลาออก</label>
+                        <input type="time" id="place-end-time">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>ค่าเข้าชม (บาท)</label>
+                    <input type="number" id="place-fee" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label>คำอธิบาย</label>
+                    <textarea id="place-description" placeholder="รายละเอียดเพิ่มเติม..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-add">ยกเลิก</button>
+                <button class="btn btn-primary" id="confirm-add">เพิ่มสถานที่</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/planner.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/theme.js"></script>
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initSearchManager" async defer></script>
+    
+</body>
+</html>
