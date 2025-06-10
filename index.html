@@ -77,6 +77,12 @@
                             </div>
                         </div>
                         <div class="planner-main">
+                            <!-- New Display for Trip Title -->
+                            <div id="trip-title-display" class="trip-title-display hidden">
+                                <h2 id="trip-title-heading"></h2>
+                                <button id="edit-trip-details-btn" class="action-btn edit-btn" title="แก้ไขรายละเอียดทริป"><i class="fas fa-pen"></i></button>
+                            </div>
+
                             <div class="planner-header">
                                 <h2>แผนการเดินทาง</h2>
                                 <button class="btn btn-primary" id="add-place-btn"><i class="fas fa-plus"></i> เพิ่มสถานที่</button>
@@ -93,125 +99,62 @@
                     </div>
                 </div>
 
-                <!-- Search Tab -->
+                <!-- Other Tabs (Search, Budget, Packing) -->
                 <div id="search-tab" class="tab-content">
                     <div class="search-container">
-                        <div class="search-header">
-                            <h2>ค้นหาสถานที่ท่องเที่ยว</h2>
-                            <div class="search-box">
-                                <i class="fas fa-search"></i>
-                                <input type="text" id="search-input" placeholder="ค้นหาสถานที่ในกรุงเทพฯ...">
-                                <button class="btn search-btn" id="search-btn">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
+                        <div class="search-header"><h2>ค้นหาสถานที่ท่องเที่ยว</h2><div class="search-box"><i class="fas fa-search"></i><input type="text" id="search-input" placeholder="ค้นหาสถานที่ในกรุงเทพฯ..."><button class="btn search-btn" id="search-btn"><i class="fas fa-search"></i></button></div></div>
                         <div id="search-results" class="search-results"></div>
                     </div>
                 </div>
-
-                <!-- Budget Tab -->
                 <div id="budget-tab" class="tab-content">
                     <div class="budget-layout-new">
                         <div class="budget-settings-panel card">
                             <h3><i class="fas fa-sliders-h"></i> ตั้งค่างบประมาณ</h3>
-                            <div class="form-group">
-                                <label for="food-cost">ค่าอาหาร (บาท/วัน)</label>
-                                <input type="number" id="food-cost" value="800" min="0" step="50">
-                            </div>
-                            <div class="form-group">
-                                <label for="transport-cost">ค่าเดินทาง (บาท/สถานที่)</label>
-                                <input type="number" id="transport-cost" value="165" min="0" step="5">
-                            </div>
-                            <div class="form-group">
-                                <label for="accommodation-cost">ค่าที่พัก (บาท/คืน)</label>
-                                <input type="number" id="accommodation-cost" value="1200" min="0" step="100">
-                            </div>
-                             <div class="form-group">
-                                <label for="other-cost">ค่าใช้จ่ายอื่นๆ (บาท/วัน)</label>
-                                <input type="number" id="other-cost" value="500" min="0" step="50">
-                            </div>
+                            <div class="form-group"><label for="food-cost">ค่าอาหาร (บาท/วัน)</label><input type="number" id="food-cost" value="800" min="0" step="50"></div>
+                            <div class="form-group"><label for="transport-cost">ค่าเดินทาง (บาท/สถานที่)</label><input type="number" id="transport-cost" value="165" min="0" step="5"></div>
+                            <div class="form-group"><label for="accommodation-cost">ค่าที่พัก (บาท/คืน)</label><input type="number" id="accommodation-cost" value="1200" min="0" step="100"></div>
+                            <div class="form-group"><label for="other-cost">ค่าใช้จ่ายอื่นๆ (บาท/วัน)</label><input type="number" id="other-cost" value="500" min="0" step="50"></div>
                         </div>
                         <div class="budget-summary-panel">
-                            <div class="grand-total-card card">
-                                 <span class="label">รวมทั้งหมด (ประมาณการ)</span>
-                                 <span class="amount" id="grand-total-budget">0 บาท</span>
-                            </div>
-                            <div class="budget-visual-container card">
-                                <h3><i class="fas fa-chart-pie"></i> สัดส่วนค่าใช้จ่าย</h3>
-                                <div class="chart-container">
-                                    <canvas id="budgetChart"></canvas>
-                                </div>
-                            </div>
-                             <div class="budget-breakdown-container card">
-                                <h2><i class="fas fa-list-ul"></i> สรุปรายวัน</h2>
-                                <div id="daily-budget-container" class="daily-budget-container"></div>
-                            </div>
+                            <div class="grand-total-card card"><span class="label">รวมทั้งหมด (ประมาณการ)</span><span class="amount" id="grand-total-budget">0 บาท</span></div>
+                            <div class="budget-visual-container card"><h3><i class="fas fa-chart-pie"></i> สัดส่วนค่าใช้จ่าย</h3><div class="chart-container"><canvas id="budgetChart"></canvas></div></div>
+                            <div class="budget-breakdown-container card"><h2><i class="fas fa-list-ul"></i> สรุปรายวัน</h2><div id="daily-budget-container" class="daily-budget-container"></div></div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Packing Tab -->
                 <div id="packing-tab" class="tab-content">
                     <div class="packing-container card">
-                        <div class="packing-header">
-                            <h2><i class="fas fa-suitcase-rolling"></i> รายการจัดกระเป๋า</h2>
-                            <button class="btn btn-secondary" id="clear-checklist-btn"><i class="fas fa-trash-alt"></i> ล้างทั้งหมด</button>
-                        </div>
-                        
+                        <div class="packing-header"><h2><i class="fas fa-suitcase-rolling"></i> รายการจัดกระเป๋า</h2><button class="btn btn-secondary" id="clear-checklist-btn"><i class="fas fa-trash-alt"></i> ล้างทั้งหมด</button></div>
                         <div class="add-forms-container">
                              <div class="add-item-form">
                                 <h3><i class="fas fa-plus-circle"></i> เพิ่มของในกระเป๋า</h3>
-                                <div class="form-group">
-                                    <label for="checklist-item-input">ชื่อสิ่งของ</label>
-                                    <input type="text" id="checklist-item-input" placeholder="เช่น เสื้อยืด">
-                                </div>
-                                 <div class="form-group">
-                                    <label for="checklist-category-select">เลือกหมวดหมู่</label>
-                                    <select id="checklist-category-select"></select>
-                                </div>
+                                <div class="form-group"><label for="checklist-item-input">ชื่อสิ่งของ</label><input type="text" id="checklist-item-input" placeholder="เช่น เสื้อยืด"></div>
+                                <div class="form-group"><label for="checklist-category-select">เลือกหมวดหมู่</label><select id="checklist-category-select"></select></div>
                                 <button class="btn btn-primary" id="add-checklist-item-btn"><i class="fas fa-plus"></i> เพิ่มของ</button>
                             </div>
-
                             <div class="add-category-form">
                                 <h3><i class="fas fa-folder-plus"></i> เพิ่มหมวดหมู่ใหม่</h3>
-                                 <div class="form-group">
-                                    <label for="new-category-input">ชื่อหมวดหมู่</label>
-                                    <input type="text" id="new-category-input" placeholder="เช่น เอกสาร">
-                                </div>
+                                <div class="form-group"><label for="new-category-input">ชื่อหมวดหมู่</label><input type="text" id="new-category-input" placeholder="เช่น เอกสาร"></div>
                                 <button class="btn btn-secondary" id="add-category-btn">เพิ่มหมวดหมู่</button>
                             </div>
                         </div>
-                        
-                        <div class="checklist-progress">
-                            <div class="progress-bar-container"><div class="progress-bar" id="checklist-progress-bar"></div></div>
-                            <span id="checklist-progress-text">0/0</span>
-                        </div>
-
-                        <div id="checklist-container" class="checklist-container">
-                            <!-- Categories and items will be rendered here -->
-                        </div>
+                        <div class="checklist-progress"><div class="progress-bar-container"><div class="progress-bar" id="checklist-progress-bar"></div></div><span id="checklist-progress-text">0/0</span></div>
+                        <div id="checklist-container" class="checklist-container"></div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Modals (Add Place, Confirmation) -->
+    <!-- Modals -->
     <div id="add-place-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header"><h3>เพิ่มสถานที่ใหม่</h3><button class="close-btn" id="close-modal"><i class="fas fa-times"></i></button></div>
             <div class="modal-body">
                 <div class="form-group"><label for="place-name">ชื่อสถานที่</label><input type="text" id="place-name" placeholder="เช่น วัดพระแก้ว"></div>
-                <div class="form-row">
-                    <div class="form-group"><label for="place-province">จังหวัด</label><select id="place-province"><option value="">เลือกจังหวัด</option><optgroup label="ภาคกลาง"><option value="bangkok">กรุงเทพมหานคร</option><option value="ayutthaya">พระนครศรีอยุธยา</option><option value="kanchanaburi">กาญจนบุรี</option><option value="nakhonpathom">นครปฐม</option><option value="samutsongkhram">สมุทรสงคราม</option></optgroup><optgroup label="ภาคเหนือ"><option value="Chiang Mai">เชียงใหม่</option><option value="Chiang Rai">เชียงราย</option><option value="Lampang">ลำปาง</option><option value="Lam phun">ลำพูน</option><option value="Phayao">พะเยา</option></optgroup><optgroup label="ภาคอีสาน"><option value="Khon Kaen">ขอนแก่น</option><option value="Chaiyaphum">ชัยภูมิ</option><option value="Burirum">บุรีรัมย์</option><option value="Loei">เลย</option><option value="Surin">สุรินทร์</option></optgroup><optgroup label="ภาคใต้"><option value="Krabi">กระบี่</option><option value="Trang">ตรัง</option><option value="Chumphon">ชุมพร</option><option value="Songkhla">สงขลา</option><option value="Yala">ยะลา</option></optgroup></select></div>
-                    <div class="form-group"><label for="place-date">วันที่ไป</label><input type="date" id="place-date"></div>
-                </div>
+                <div class="form-row"><div class="form-group"><label for="place-province">จังหวัด</label><select id="place-province"><option value="">เลือกจังหวัด</option><optgroup label="ภาคกลาง"><option value="bangkok">กรุงเทพมหานคร</option><option value="ayutthaya">พระนครศรีอยุธยา</option><option value="kanchanaburi">กาญจนบุรี</option><option value="nakhonpathom">นครปฐม</option><option value="samutsongkhram">สมุทรสงคราม</option></optgroup><optgroup label="ภาคเหนือ"><option value="Chiang Mai">เชียงใหม่</option><option value="Chiang Rai">เชียงราย</option><option value="Lampang">ลำปาง</option><option value="Lam phun">ลำพูน</option><option value="Phayao">พะเยา</option></optgroup><optgroup label="ภาคอีสาน"><option value="Khon Kaen">ขอนแก่น</option><option value="Chaiyaphum">ชัยภูมิ</option><option value="Burirum">บุรีรัมย์</option><option value="Loei">เลย</option><option value="Surin">สุรินทร์</option></optgroup><optgroup label="ภาคใต้"><option value="Krabi">กระบี่</option><option value="Trang">ตรัง</option><option value="Chumphon">ชุมพร</option><option value="Songkhla">สงขลา</option><option value="Yala">ยะลา</option></optgroup></select></div><div class="form-group"><label for="place-date">วันที่ไป</label><input type="date" id="place-date"></div></div>
                 <div class="form-group"><label for="place-category">ประเภท</label><select id="place-category"><option value="temple">วัด-พระราชวัง</option><option value="Shopping mall">ห้างสรรพสินค้า</option><option value="Cafe">คาเฟ่</option><option value="Maket">ตลาด</option><option value="restaurant">ร้านอาหาร</option><option value="viewpoint">จุดชมวิว</option><option value="museum">พิพิธภัณฑ์</option><option value="Others">อื่นๆ</option></select></div>
-                <div class="form-row">
-                    <div class="form-group"><label for="place-start-time">เวลาเข้า</label><input type="time" id="place-start-time"></div>
-                    <div class="form-group"><label for="place-end-time">เวลาออก</label><input type="time" id="place-end-time"></div>
-                </div>
+                <div class="form-row"><div class="form-group"><label for="place-start-time">เวลาเข้า</label><input type="time" id="place-start-time"></div><div class="form-group"><label for="place-end-time">เวลาออก</label><input type="time" id="place-end-time"></div></div>
                 <div class="form-group"><label for="place-fee">ค่าเข้าชม (บาท)</label><input type="number" id="place-fee" placeholder="0"></div>
                 <div class="form-group"><label for="place-description">คำอธิบาย</label><textarea id="place-description" rows="3" placeholder="รายละเอียดเพิ่มเติม..."></textarea></div>
             </div>
