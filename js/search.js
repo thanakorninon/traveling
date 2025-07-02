@@ -1,5 +1,6 @@
 // This function will be called by the Google Maps API script on load
 function initSearchManager() {
+<<<<<<< HEAD
     // If travelApp isn't ready, wait a bit and try again.
     // This handles the race condition between app.js loading and the API callback.
     if (window.travelApp) {
@@ -7,6 +8,12 @@ function initSearchManager() {
     } else {
         setTimeout(initSearchManager, 100);
     }
+=======
+    // Wait for the main app to be ready
+    document.addEventListener('appReady', () => {
+        window.searchManager = new SearchManager(window.travelApp);
+    }, { once: true });
+>>>>>>> a1f778c (ใส่ข้อคUpdate my work)
 }
 
 class SearchManager {
@@ -18,6 +25,7 @@ class SearchManager {
     }
 
     init() {
+<<<<<<< HEAD
         try {
             // A map instance is required for the PlacesService, but it doesn't need to be displayed.
             const map = new google.maps.Map(document.createElement('div'));
@@ -27,6 +35,18 @@ class SearchManager {
         } catch (error) {
             console.error("Google Maps API not loaded correctly.", error);
             this.showError("ไม่สามารถโหลด Google Maps API ได้ โปรดตรวจสอบ API Key และการเชื่อมต่ออินเทอร์เน็ต");
+=======
+        // Check if Google Maps API is loaded
+        if (typeof google === 'object' && typeof google.maps === 'object') {
+            const map = new google.maps.Map(document.createElement('div'));
+            this.placesService = new google.maps.places.PlacesService(map);
+            this.bindSearchEvents();
+            this.searchPlaces("ที่เที่ยวในกรุงเทพ"); // Initial search
+        } else {
+            console.error("Google Maps API not loaded correctly. Check API Key.");
+            this.showError("ไม่สามารถโหลด Google Maps API ได้ โปรดตรวจสอบ API Key และการเชื่อมต่ออินเทอร์เน็ต");
+            document.getElementById('api-key-warning').classList.remove('hidden');
+>>>>>>> a1f778c (ใส่ข้อคUpdate my work)
         }
     }
 
@@ -55,12 +75,15 @@ class SearchManager {
         };
 
         this.placesService.textSearch(request, (results, status) => {
-            this.hideLoading();
             if (status === google.maps.places.PlacesServiceStatus.OK && results) {
                 this.places = results;
                 this.displayPlaces();
             } else {
+<<<<<<< HEAD
                 this.showError('ไม่พบสถานที่ที่ค้นหา หรือเกิดข้อผิดพลาด กรุณาลองใหม่ (อาจเป็นเพราะ API Key ไม่ถูกต้อง)');
+=======
+                this.showError('ไม่พบสถานที่ที่ค้นหา หรือเกิดข้อผิดพลาด (อาจเป็นเพราะ API Key ไม่ถูกต้อง)');
+>>>>>>> a1f778c (ใส่ข้อคUpdate my work)
                 console.error("Places API search failed with status:", status);
             }
         });
@@ -75,7 +98,6 @@ class SearchManager {
 
         container.innerHTML = this.places.map(place => this.createPlaceCardHTML(place)).join('');
 
-        // Bind "add to plan" buttons
         container.querySelectorAll('.add-to-plan-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -89,7 +111,10 @@ class SearchManager {
         const place = this.places.find(p => p.place_id === placeId);
         if (!place) return;
 
+<<<<<<< HEAD
         // Check if already in itinerary
+=======
+>>>>>>> a1f778c (ใส่ข้อคUpdate my work)
         if (this.app.itinerary.some(p => p.name.toLowerCase() === place.name.toLowerCase())) {
             this.app.showToast(`'${place.name}' อยู่ในแผนการเดินทางแล้ว`, 'info');
             return;
@@ -99,6 +124,7 @@ class SearchManager {
             name: place.name,
             description: place.formatted_address || '',
             category: this.mapGoogleTypeToCategory(place.types),
+<<<<<<< HEAD
             province: 'bangkok' // Default to bangkok, can be improved
         };
         
@@ -106,14 +132,24 @@ class SearchManager {
         this.app.addPlaceFromApi(placeData);
 
         // Switch to planner tab to show the result
+=======
+            province: 'bangkok'
+        };
+        
+        this.app.addPlaceFromApi(placeData);
+>>>>>>> a1f778c (ใส่ข้อคUpdate my work)
         this.app.showToast(`'${place.name}' ถูกเลือกแล้ว กรุณากรอกรายละเอียด`, 'success');
     }
     
     mapGoogleTypeToCategory(types) {
         if (!types) return 'Others';
+<<<<<<< HEAD
         const typeMap = {
             'tourist_attraction': 'Others', 'temple': 'temple', 'church': 'temple', 'mosque': 'temple', 'hindu_temple': 'temple', 'buddhist_temple': 'temple', 'shopping_mall': 'Shopping mall', 'department_store': 'Shopping mall', 'market': 'Maket', 'cafe': 'Cafe', 'restaurant': 'restaurant', 'bar': 'restaurant', 'museum': 'museum', 'art_gallery': 'museum', 'park': 'viewpoint', 'zoo': 'viewpoint'
         };
+=======
+        const typeMap = { 'tourist_attraction': 'Others', 'temple': 'temple', 'church': 'temple', 'mosque': 'temple', 'hindu_temple': 'temple', 'buddhist_temple': 'temple', 'shopping_mall': 'Shopping mall', 'department_store': 'Shopping mall', 'market': 'Maket', 'cafe': 'Cafe', 'restaurant': 'restaurant', 'bar': 'restaurant', 'museum': 'museum', 'art_gallery': 'museum', 'park': 'viewpoint', 'zoo': 'viewpoint' };
+>>>>>>> a1f778c (ใส่ข้อคUpdate my work)
         for (const type of types) {
             if (typeMap[type]) return typeMap[type];
         }
@@ -148,11 +184,14 @@ class SearchManager {
 
     showLoading() {
         document.getElementById('search-results').innerHTML = `<div class="spinner-container"><div class="spinner"></div><p>กำลังค้นหา...</p></div>`;
+<<<<<<< HEAD
     }
     
     hideLoading() {
         const spinner = document.querySelector('.spinner-container');
         if (spinner) spinner.remove();
+=======
+>>>>>>> a1f778c (ใส่ข้อคUpdate my work)
     }
 
     showError(message) {

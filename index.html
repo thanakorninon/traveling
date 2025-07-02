@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel Planner - วางแผนการเที่ยว</title>
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="main.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -20,19 +20,23 @@
                     <nav class="nav">
                         <button class="nav-btn active" data-tab="planner">
                             <i class="fas fa-route"></i>
-                            วางแผนการเที่ยว
+                            วางแผน
                         </button>
                         <button class="nav-btn" data-tab="search">
                             <i class="fas fa-search"></i>
-                            ค้นหาสถานที่
+                            ค้นหา
                         </button>
                         <button class="nav-btn" data-tab="budget">
-                            <i class="fas fa-calculator"></i>
-                            คำนวณงบประมาณ
+                            <i class="fas fa-wallet"></i>
+                            งบประมาณ
                         </button>
                         <button class="nav-btn" data-tab="packing">
                             <i class="fas fa-suitcase-rolling"></i>
                             จัดกระเป๋า
+                        </button>
+                        <button class="nav-btn" data-tab="info">
+                            <i class="fas fa-book-medical"></i>
+                            ข้อมูลสำคัญ
                         </button>
                     </nav>
                     <div class="theme-switcher">
@@ -171,6 +175,9 @@
     <div id="toast-container"></div>
 
     <!-- Scripts -->
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/app.js"></script>
     <script src="js/search.js"></script>

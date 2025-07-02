@@ -1,6 +1,7 @@
 // Main App Controller - Improved Drag & Drop with Overlap Validation
 class TravelPlannerApp {
     constructor() {
+        // State properties
         this.currentTab = 'planner';
         this.itinerary = [];
         this.checklist = [];
@@ -23,6 +24,69 @@ class TravelPlannerApp {
     init() {
         this.loadState();
         this.bindEvents();
+        this.updateUI();
+        // Fire event to notify other scripts that the app is ready
+        document.dispatchEvent(new Event('appReady'));
+    }
+
+    // --- State Management ---
+    loadState() {
+        try {
+            const savedItinerary = localStorage.getItem('travelItinerary');
+            if (savedItinerary) this.itinerary = JSON.parse(savedItinerary);
+        } catch (e) { this.itinerary = []; }
+
+        try {
+            const storedChecklist = localStorage.getItem('travelChecklist');
+            const parsedChecklist = storedChecklist ? JSON.parse(storedChecklist) : null;
+            if (Array.isArray(parsedChecklist) && parsedChecklist.length > 0 && 'items' in parsedChecklist[0]) {
+                 this.checklist = parsedChecklist;
+            } else {
+                this.checklist = [
+                    { id: Date.now(), name: 'เสื้อผ้า', items: [] },
+                    { id: Date.now() + 1, name: 'ของใช้ส่วนตัว', items: [] },
+                    { id: Date.now() + 2, name: 'เอกสาร', items: [] }
+                ];
+            }
+        } catch (e) { /* handle error or set default */ }
+        
+        try {
+            const savedExpenses = localStorage.getItem('travelExpenses');
+            if (savedExpenses) this.expenses = JSON.parse(savedExpenses);
+        } catch (e) { this.expenses = []; }
+
+        try {
+            const tripInfo = localStorage.getItem('currentTrip');
+            if (tripInfo) {
+                const { name, startTime } = JSON.parse(tripInfo);
+                document.getElementById('trip-name').value = name || '';
+                document.getElementById('start-time').value = startTime || '09:00';
+            }
+        } catch (e) { console.error("Could not parse trip info.", e); }
+
+        try {
+            const savedBudget = localStorage.getItem('budgetSettings');
+            if (savedBudget) this.budgetSettings = JSON.parse(savedBudget);
+        } catch(e) { console.error("Could not parse budget settings.", e); }
+        
+        document.getElementById('food-cost').value = this.budgetSettings.foodPerDay;
+        document.getElementById('transport-cost').value = this.budgetSettings.transportPerPlace;
+        document.getElementById('accommodation-cost').value = this.budgetSettings.accommodationPerNight;
+        document.getElementById('other-cost').value = this.budgetSettings.otherPerDay;
+    }
+
+    saveState() {
+        localStorage.setItem('travelItinerary', JSON.stringify(this.itinerary));
+        localStorage.setItem('travelChecklist', JSON.stringify(this.checklist));
+        localStorage.setItem('travelExpenses', JSON.stringify(this.expenses));
+        const tripData = { name: document.getElementById('trip-name').value, startTime: document.getElementById('start-time').value };
+        localStorage.setItem('currentTrip', JSON.stringify(tripData));
+        localStorage.setItem('budgetSettings', JSON.stringify(this.budgetSettings));
+    }
+    
+    updateAndSave() {
+        this.sortItinerary();
+        this.saveState();
         this.updateUI();
     }
 
@@ -333,4 +397,6 @@ class TravelPlannerApp {
 
 document.addEventListener('DOMContentLoaded', () => {
     window.travelApp = new TravelPlannerApp();
+    window.infoManager = new InfoManager(window.travelApp);
+    window.exportManager = new ExportManager(window.travelApp);
 });
